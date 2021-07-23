@@ -3,6 +3,7 @@ package com.blockCard.fallback;
 import ai.active.fulfillment.webhook.data.request.MorfeusWebhookRequest;
 import ai.active.fulfillment.webhook.data.request.NlpV1;
 import ai.active.fulfillment.webhook.data.response.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -795,8 +796,20 @@ public class BlockCardServiceClass {
   public MorfeusWebhookResponse areYouSureMessage(MorfeusWebhookRequest request) {
     WorkflowValidationResponse workflowValidationResponse=new WorkflowValidationResponse.Builder(Status.SUCCESS).build();
 
-    String card_name=request.getWorkflowParams().getWorkflowVariables().get("banking_product_name");
-    String block_type=request.getWorkflowParams().getWorkflowVariables().get("banking_transaction_description");
+    String card_name="";
+    if(StringUtils.isNotEmpty(request.getWorkflowParams().getWorkflowVariables().get("banking_product_name"))){
+      card_name = request.getWorkflowParams().getWorkflowVariables().get("banking_product_name");
+    }else{
+      card_name = request.getWorkflowParams().getWorkflowVariables().get("banking_product_name_Start");
+    }
+
+    String block_type ="";
+    if(StringUtils.isNotEmpty(request.getWorkflowParams().getWorkflowVariables().get("banking_transaction_description"))){
+      block_type=request.getWorkflowParams().getWorkflowVariables().get("banking_transaction_description");
+    }
+    else{
+      block_type=request.getWorkflowParams().getWorkflowVariables().get("banking_transaction_description_Start");
+    }
     String card_number=request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number");
 
     NlpV1 nlpV1 = (NlpV1) request.getNlp();
