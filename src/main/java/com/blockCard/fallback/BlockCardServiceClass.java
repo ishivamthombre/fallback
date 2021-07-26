@@ -152,6 +152,7 @@ public class BlockCardServiceClass {
   public MorfeusWebhookResponse validateBlockType(MorfeusWebhookRequest request) {
     String block_type= request.getWorkflowParams().getRequestVariables().get("banking.transaction-description");
     String block_type1=request.getWorkflowParams().getRequestVariables().get("banking_transaction_description");
+    String block_type2=request.getWorkflowParams().getRequestVariables().get("banking_transaction_description_Start");
     MorfeusWebhookResponse morfeusWebhookResponse= new MorfeusWebhookResponse();
     NlpV1 nlpV1 = (NlpV1) request.getNlp();
     String langCode = nlpV1.getData().has("langCode") ? nlpV1.getData().get("langCode").asText() : request.getBot().getLanguageCode();
@@ -160,6 +161,10 @@ public class BlockCardServiceClass {
       return morfeusWebhookResponse;
     }
     else if(block_type1!=null&&(block_type1.equalsIgnoreCase("temporary")||block_type1.equalsIgnoreCase("permanent"))){
+      morfeusWebhookResponse.setStatus(Status.SUCCESS);
+      return morfeusWebhookResponse;
+    }
+    else if(block_type2!=null&&(block_type2.equalsIgnoreCase("temporary")||block_type2.equalsIgnoreCase("permanent"))){
       morfeusWebhookResponse.setStatus(Status.SUCCESS);
       return morfeusWebhookResponse;
     }
