@@ -40,9 +40,6 @@ public class Controller {
                                              @RequestHeader(name = "X-Hub-Signature", required = true) String signature, HttpServletResponse response) throws Exception {
     MorfeusWebhookRequest request = objectMapper.readValue(body, MorfeusWebhookRequest.class);
     MorfeusWebhookResponse morfeusWebhookResponse =  blockCard.areYouSureMessage(request);
-
-    //  System.out.println(body);
-
     return morfeusWebhookResponse;
   }
 

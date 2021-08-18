@@ -815,7 +815,13 @@ public class BlockCardServiceClass {
     else{
       block_type=request.getWorkflowParams().getWorkflowVariables().get("banking_transaction_description_Start");
     }
-    String card_number=request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number");
+    String card_number="";
+    if(StringUtils.isNotEmpty(request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number"))){
+      card_number=request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number");
+    }
+    else{
+      card_number=request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number_Start");
+    }
 
     NlpV1 nlpV1 = (NlpV1) request.getNlp();
     String langCode = nlpV1.getData().has("langCode") ? nlpV1.getData().get("langCode").asText() : request.getBot().getLanguageCode();
