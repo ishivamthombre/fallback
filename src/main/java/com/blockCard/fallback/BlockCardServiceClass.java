@@ -6,6 +6,7 @@ import ai.active.fulfillment.webhook.data.response.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -807,6 +808,11 @@ public class BlockCardServiceClass {
     }else{
       card_name = request.getWorkflowParams().getWorkflowVariables().get("banking_product_name_Start");
     }
+    if (!CollectionUtils.isEmpty(request.getWorkflowParams().getRequestVariables()) && StringUtils.isNotEmpty(
+        request.getWorkflowParams().getRequestVariables().get("banking_product_name")) && !card_name.equalsIgnoreCase(
+        request.getWorkflowParams().getRequestVariables().get("banking_product_name"))) {
+      card_name = request.getWorkflowParams().getRequestVariables().get("banking_product_name");
+    }
 
     String block_type ="";
     if(StringUtils.isNotEmpty(request.getWorkflowParams().getWorkflowVariables().get("banking_transaction_description"))){
@@ -815,12 +821,24 @@ public class BlockCardServiceClass {
     else{
       block_type=request.getWorkflowParams().getWorkflowVariables().get("banking_transaction_description_Start");
     }
+    if (!CollectionUtils.isEmpty(request.getWorkflowParams().getRequestVariables()) && StringUtils.isNotEmpty(
+        request.getWorkflowParams().getRequestVariables().get("banking_transaction_description")) && !block_type.equalsIgnoreCase(
+        request.getWorkflowParams().getRequestVariables().get("banking_transaction_description"))) {
+      block_type = request.getWorkflowParams().getRequestVariables().get("banking_transaction_description");
+    }
+
+
     String card_number="";
     if(StringUtils.isNotEmpty(request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number"))){
       card_number=request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number");
     }
     else{
       card_number=request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number_Start");
+    }
+    if (!CollectionUtils.isEmpty(request.getWorkflowParams().getRequestVariables()) && StringUtils.isNotEmpty(
+        request.getWorkflowParams().getRequestVariables().get("banking_product_card_number")) && !card_number.equalsIgnoreCase(
+        request.getWorkflowParams().getRequestVariables().get("banking_product_card_number"))) {
+      card_number = request.getWorkflowParams().getRequestVariables().get("banking_product_card_number");
     }
 
     NlpV1 nlpV1 = (NlpV1) request.getNlp();
