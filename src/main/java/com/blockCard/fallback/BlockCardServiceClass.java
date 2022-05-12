@@ -829,16 +829,27 @@ public class BlockCardServiceClass {
 
 
     String card_number="";
-    if(StringUtils.isNotEmpty(request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number"))){
+    if(request.getWorkflowParams().getWorkflowVariables().containsKey("banking_product_card_number") && StringUtils.isNotEmpty(request.getWorkflowParams().getWorkflowVariables().get(
+        "banking_product_card_number"))){
       card_number=request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number");
     }
     else{
       card_number=request.getWorkflowParams().getWorkflowVariables().get("banking_product_card_number_Start");
     }
     if (!CollectionUtils.isEmpty(request.getWorkflowParams().getRequestVariables()) && StringUtils.isNotEmpty(
-        request.getWorkflowParams().getRequestVariables().get("banking_product_card_number")) && !card_number.equalsIgnoreCase(
+        request.getWorkflowParams().getRequestVariables().get("banking_product_card_number")) && StringUtils.isNotEmpty(card_number) && !card_number.equalsIgnoreCase(
         request.getWorkflowParams().getRequestVariables().get("banking_product_card_number"))) {
       card_number = request.getWorkflowParams().getRequestVariables().get("banking_product_card_number");
+    }else if(!CollectionUtils.isEmpty(request.getWorkflowParams().getRequestVariables()) && StringUtils.isNotEmpty(
+        request.getWorkflowParams().getRequestVariables().get("banking_product_card_number"))){
+      card_number = request.getWorkflowParams().getRequestVariables().get("banking_product_card_number");
+    }
+    if (card_number != null) {
+      if (card_number.equalsIgnoreCase("6587")) {
+        card_name = "platinum";
+      } else if(card_number.equalsIgnoreCase("4785")){
+        card_name = "signature";
+      }
     }
 
     NlpV1 nlpV1 = (NlpV1) request.getNlp();
